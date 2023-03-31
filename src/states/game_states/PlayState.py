@@ -24,7 +24,7 @@ from src.Player import Player
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 1)
+        self.level = enter_params.get("level", 2)
         self.camera = enter_params.get(
             "camera", Camera(0, 0, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
         )
