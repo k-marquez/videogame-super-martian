@@ -5,6 +5,9 @@ Study Case: Super Martian (Platformer)
 Author: Alejandro Mujica
 alejandro.j.mujic4@gmail.com
 
+Edit by: Kevin Márquez
+marquezberriosk@gmail.com
+
 This file contains the class TmxLevelLoader.
 """
 import xml.etree.ElementTree as ET
@@ -58,29 +61,29 @@ class TmxLevelLoader:
         level.tilemap = tilemap
 
     def load_items(self, level: Any, group: ET.Element) -> None:
-        layer = group.find("layer")
-        item_name = layer.attrib["name"]
-        data = [line for line in layer.find("data").text.splitlines() if len(line) > 0]
-        for i in range(self.height):
-            line = [s for s in data[i].split(",") if len(s) > 0]
-            for j in range(self.width):
-                value = int(line[j])
+        for layer in group.findall("layer"):
+            item_name = layer.attrib["name"]
+            data = [line for line in layer.find("data").text.splitlines() if len(line) > 0]
+            for i in range(self.height):
+                line = [s for s in data[i].split(",") if len(s) > 0]
+                for j in range(self.width):
+                    value = int(line[j])
 
-                if value == 0:
-                    continue
+                    if value == 0:
+                        continue
 
-                frame_index = value - self.first_ids["tiles"]
+                    frame_index = value - self.first_ids["tiles"]
 
-                level.add_item(
-                    {
-                        "item_name": item_name,
-                        "frame_index": frame_index,
-                        "x": j * self.tilewidth,
-                        "y": i * self.tileheight,
-                        "width": self.tilewidth,
-                        "height": self.tileheight,
-                    }
-                )
+                    level.add_item(
+                        {
+                            "item_name": item_name,
+                            "frame_index": frame_index,
+                            "x": j * self.tilewidth,
+                            "y": i * self.tileheight,
+                            "width": self.tilewidth,
+                            "height": self.tileheight,
+                        }
+                    )
 
     def load_creatures(self, level: Any, group: ET.Element) -> None:
         layer = group.find("layer")

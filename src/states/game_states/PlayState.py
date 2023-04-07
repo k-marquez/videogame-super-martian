@@ -5,6 +5,9 @@ Study Case: Super Martian (Platformer)
 Author: Alejandro Mujica
 alejandro.j.mujic4@gmail.com
 
+Edit by: Kevin Márquez
+marquezberriosk@gmail.com
+
 This file contains the class PlayState.
 """
 from typing import Dict, Any
@@ -24,13 +27,13 @@ from src.Player import Player
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 2)
+        self.level = enter_params.get("level", 1)
         self.camera = enter_params.get(
             "camera", Camera(0, 0, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
         )
         self.game_level = enter_params.get("game_level")
         if self.game_level is None:
-            self.game_level = GameLevel(self.level, self.camera)
+            self.game_level = GameLevel(self.level, self.camera, self.state_machine)
             pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
             pygame.mixer.music.play(loops=-1)
 
@@ -96,10 +99,14 @@ class PlayState(BaseState):
         for item in self.game_level.items:
             if not item.in_play or not item.collidable:
                 continue
-
+            
             if self.player.collides(item):
-                item.on_collide(self.player)
-                item.on_consume(self.player)
+                if item.type == "key":
+                    item.on_consume(self.player, level = self.level + 1, state_machine = self.state_machine)
+                else:
+                    item.on_collide(self.player)
+                    item.on_consume(self.player)
+
 
     def render(self, surface: pygame.Surface) -> None:
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))

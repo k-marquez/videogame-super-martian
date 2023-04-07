@@ -5,22 +5,26 @@ Study Case: Super Martian (Platformer)
 Author: Alejandro Mujica
 alejandro.j.mujic4@gmail.com
 
+Edit by: Kevin Márquez
+marquezberriosk@gmail.com
+
 This file contains the class GameLevel.
 """
 from typing import Any, Dict
 
 import pygame
 
+from gale.state_machine import StateMachine
+
 import settings
 from src.Camera import Camera
-from src.Tilemap import Tilemap
 from src.Creature import Creature
 from src.GameItem import GameItem
 from src.definitions import creatures, items
 
 
 class GameLevel:
-    def __init__(self, num_level: int, camera: Camera) -> None:
+    def __init__(self, num_level: int, camera: Camera, state_machine: StateMachine) -> None:
         self.tilemap = None
         self.creatures = []
         self.items = []
@@ -28,8 +32,7 @@ class GameLevel:
         settings.LevelLoader().load(self, settings.TILEMAPS[num_level])
 
     def add_item(self, item_data: Dict[str, Any]) -> None:
-        item_name = item_data.pop("item_name")
-        definition = items.ITEMS[item_name][item_data["frame_index"]]
+        definition = items.ITEMS[item_data["item_name"]][item_data["frame_index"]]
         definition.update(item_data)
         self.items.append(GameItem(**definition))
 
