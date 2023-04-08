@@ -5,13 +5,15 @@ Study Case: Super Martian (Platformer)
 Author: Alejandro Mujica
 alejandro.j.mujic4@gmail.com
 
-Edit by: Kevin Márquez
+Author: Kevin Márquez
 marquezberriosk@gmail.com
+
+Author: Lewis Ochoa
+lewis8a@gmail.com
 
 This file contains the definition for items.
 """
 from typing import Dict, Any
-import pudb
 
 import random
 
