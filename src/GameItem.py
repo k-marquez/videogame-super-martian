@@ -33,6 +33,14 @@ class GameItem(GameObject):
         self._on_consume = on_consume
         self.in_play = True
         self.type = item_name
+        
+        if self.type == "key":
+            self.in_play = False
+        
+        elif self.type == "key_block":
+            self.in_play = False
+            self.activate = False
+
 
     def respawn(self, x: Optional[float] = None, y: Optional[float] = None) -> None:
         if x is not None:
@@ -41,10 +49,10 @@ class GameItem(GameObject):
             self.y = y
         self.in_play = True
 
-    def on_collide(self, another: Any) -> Any:
+    def on_collide(self, another: Any, **kwargs: Optional[Dict[str, Any]]) -> Any:
         if not self.collidable or self._on_collide is None:
             return None
-        return self._on_collide(self, another)
+        return self._on_collide(self, another, **kwargs)
 
     def on_consume(self, consumer: Any, **kwargs: Optional[Dict[str, Any]]) -> Any:
         if not self.consumable or self._on_consume is None:

@@ -5,6 +5,9 @@ Study Case: Super Martian (Platformer)
 Author: Alejandro Mujica
 alejandro.j.mujic4@gmail.com
 
+Edit by: Kevin Márquez
+marquezberriosk@gmail.com
+
 This file contains the game settings that include the association of the
 inputs with an their ids, constants of values to set up the game, sounds,
 textures, frames, and fonts.
@@ -42,6 +45,9 @@ PLAYER_SPEED = 80
 GRAVITY = 980
 
 NUM_LEVELS = 2
+
+# Goal score
+GOAL_SCORE = 1
 
 BASE_DIR = pathlib.Path(__file__).parent
 

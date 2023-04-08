@@ -52,6 +52,7 @@ class StartState(BaseState):
             on_finish=self.arrive,
         )
 
+
     def exit(self) -> None:
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()

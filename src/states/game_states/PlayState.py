@@ -45,8 +45,11 @@ class PlayState(BaseState):
         if self.level == 2:
             self.player.x = 16 * 2
             self.player.y = 16 * 5
+            self.player.game_level = self.game_level
         
         self.timer = enter_params.get("timer", 30)
+        self.key = False
+        self.activate_key = False
 
         def countdown_timer():
             self.timer -= 1
@@ -103,10 +106,30 @@ class PlayState(BaseState):
             if self.player.collides(item):
                 if item.type == "key":
                     item.on_consume(self.player, level = self.level + 1, state_machine = self.state_machine)
+                elif item.type == "key_block" and not self.activate_key:
+                    self.activate_key = True
+                    key_object = [key for key in self.game_level.items if  key.type == "key" and key.y == item.y and key.x == item.x]
+                    item.on_collide(self.player, item_key = key_object[0])
                 else:
                     item.on_collide(self.player)
                     item.on_consume(self.player)
 
+        goal_score_by_level = settings.GOAL_SCORE + settings.GOAL_SCORE * 0.05 * self.level
+        
+        if self.player.score >= goal_score_by_level and not self.key:
+            self.key = True
+            # Clean coins of world
+            self.game_level.items = [key for key in self.game_level.items if key.type == "key" or key.type == "key_block"]
+            # Frezzing time
+            time = self.timer
+            Timer.clear()
+            self.timer = time
+            # Play sound
+            settings.SOUNDS["timer"].play()
+            # Spawn key block and key
+            keys_objects = [key for key in self.game_level.items if key.type == "key_block"]
+            for key_object in keys_objects:
+                key_object.in_play = True
 
     def render(self, surface: pygame.Surface) -> None:
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
