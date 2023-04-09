@@ -113,7 +113,7 @@ class PlayState(BaseState):
                     item.on_collide(self.player)
                     item.on_consume(self.player)
 
-        goal_score_by_level = settings.GOAL_SCORE + settings.GOAL_SCORE * 0.05 * self.level
+        goal_score_by_level = settings.GOAL_SCORE + settings.GOAL_SCORE * 0.5 * self.level
         
         if self.player.score >= goal_score_by_level and not self.key:
             self.key = True

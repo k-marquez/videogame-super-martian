@@ -47,7 +47,7 @@ GRAVITY = 580
 NUM_LEVELS = 2
 
 # Goal score
-GOAL_SCORE = 1
+GOAL_SCORE = 30
 
 BASE_DIR = pathlib.Path(__file__).parent
 
