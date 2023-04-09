@@ -17,8 +17,9 @@ import settings
 
 
 class GameOverState(BaseState):
-    def enter(self, player) -> None:
+    def enter(self, player, level) -> None:
         self.player = player
+        self.level = level
         InputHandler.register_listener(self)
 
     def exit(self) -> None:
@@ -26,7 +27,7 @@ class GameOverState(BaseState):
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
-            self.state_machine.change("play")
+            self.state_machine.change("play", level = self.level)
 
     def render(self, surface: pygame.Surface) -> None:
         surface.fill((25, 130, 196))

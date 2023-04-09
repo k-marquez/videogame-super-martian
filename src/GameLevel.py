@@ -14,8 +14,6 @@ from typing import Any, Dict
 
 import pygame
 
-from gale.state_machine import StateMachine
-
 import settings
 from src.Camera import Camera
 from src.Creature import Creature
@@ -24,7 +22,7 @@ from src.definitions import creatures, items
 
 
 class GameLevel:
-    def __init__(self, num_level: int, camera: Camera, state_machine: StateMachine) -> None:
+    def __init__(self, num_level: int, camera: Camera) -> None:
         self.tilemap = None
         self.creatures = []
         self.items = []

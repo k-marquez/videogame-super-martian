@@ -48,7 +48,7 @@ def pickup_yellow_coin(coin: GameItem, player: Player, **kwargs: Dict[str,Any]):
     pickup_coin(coin, player, 50, 54, random.uniform(20, 25))
     
 def pickup_key(key: GameItem, player: Player, **kwargs: Dict[str,Any]):
-    kwargs.get("state_machine").change("play", player = player, level = kwargs.get("level"))
+    kwargs.get("state_machine").change("play", score = player.score, level = kwargs.get("level"))
 
 def spawn_key(key_bloc: GameItem, another: Any, **enter_params: Dict[str,Any]):
     if not key_bloc.activate:

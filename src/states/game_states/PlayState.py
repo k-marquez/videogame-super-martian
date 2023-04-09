@@ -33,19 +33,18 @@ class PlayState(BaseState):
         )
         self.game_level = enter_params.get("game_level")
         if self.game_level is None:
-            self.game_level = GameLevel(self.level, self.camera, self.state_machine)
+            self.game_level = GameLevel(self.level, self.camera)
             pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
             pygame.mixer.music.play(loops=-1)
 
         self.tilemap = self.game_level.tilemap
-        self.player = enter_params.get("player")
-        if self.player is None:
+        if self.level == 1:
             self.player = Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
-            self.player.change_state("idle")
         if self.level == 2:
-            self.player.x = 16 * 2
-            self.player.y = 16 * 5
-            self.player.game_level = self.game_level
+            self.player = Player(16 * 2, 16 * 5, self.game_level)
+        
+        self.player.change_state("idle")
+        self.player.score = enter_params.get("score", 0)
         
         self.timer = enter_params.get("timer", 30)
         self.key = False
@@ -71,7 +70,7 @@ class PlayState(BaseState):
         if self.player.is_dead:
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
-            self.state_machine.change("game_over", self.player)
+            self.state_machine.change("game_over", self.player, self.level)
 
         self.player.update(dt)
     
