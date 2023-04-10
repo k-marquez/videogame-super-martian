@@ -16,12 +16,13 @@ This file contains the definition for items.
 from typing import Dict, Any
 
 import random
-
+import pudb 
 from gale.timer import Timer
 
 import settings
 from src.GameItem import GameItem
 from src.Player import Player
+from src.states.entities.player_states import JumpState, WalkState, FallState
 
 
 def pickup_coin(
@@ -52,7 +53,26 @@ def pickup_yellow_coin(coin: GameItem, player: Player, **kwargs: Dict[str,Any]):
 def pickup_key(key: GameItem, player: Player, **kwargs: Dict[str,Any]):
     kwargs.get("state_machine").change("play", score = player.score, level = kwargs.get("level"))
 
-def spawn_key(key_bloc: GameItem, another: Any, **enter_params: Dict[str,Any]):
+def hit_key_box_without_action(key_bloc: GameItem, player: Any):
+    player.y = key_bloc.y - 18
+    player.vy = player.vx = 0
+    player.change_state("idle")
+
+def hit_key_box_falling(key_bloc: GameItem, player: Any):
+    player.vy = 0
+
+    if player.x < key_bloc.x + 16 and key_bloc.x < player.x + player.width:
+        player.y = key_bloc.y - 18
+        if player.vx == 0:
+            player.change_state("idle")
+        elif player.vx > 0:
+            player.change_state("walk", "right")
+        else:
+            player.change_state("walk", "left")
+
+def hit_key_box_jumping(key_bloc: GameItem, player: Any, **enter_params: Dict[str,Any]):
+    player.vy = 0
+
     if not key_bloc.activate:
         key_bloc.activate = True
 
@@ -64,6 +84,24 @@ def spawn_key(key_bloc: GameItem, another: Any, **enter_params: Dict[str,Any]):
         key.collidable = False
         final_y_key = key.y - 16
         Timer.tween(2, [ (key, {"y": final_y_key}) ], on_finish=arrive)
+
+def hit_key_box_walking(key_bloc: GameItem, player: Any):
+    player.vx = 0
+    
+    if player.x < key_bloc.x + 16:
+        player.x = key_bloc.x + 17
+    else:
+        player.x = key_bloc.x - player.width - 1
+
+def spawn_key(key_bloc: GameItem, player: Any, **enter_params: Dict[str,Any]):
+    if isinstance(player.state_machine.current, JumpState):
+        hit_key_box_jumping(key_bloc, player, **enter_params)
+    elif isinstance(player.state_machine.current, WalkState):
+        hit_key_box_walking(key_bloc, player)
+    elif isinstance(player.state_machine.current, FallState):
+        hit_key_box_falling(key_bloc, player)
+    else:
+        hit_key_box_without_action(key_bloc, player)
     
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {
@@ -108,7 +146,7 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "key_block": {
         49: {
             "texture_id": "tiles",
-            "solidness": dict(top=True, right=False, bottom=True, left=False),
+            "solidness": dict(top=True, right=True, bottom=True, left=True),
             "consumable": False,
             "collidable": True,
             "on_collide": spawn_key,

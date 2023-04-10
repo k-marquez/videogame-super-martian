@@ -107,8 +107,7 @@ class PlayState(BaseState):
             if self.player.collides(item):
                 if item.type == "key":
                     item.on_consume(self.player, level = self.level + 1, state_machine = self.state_machine)
-                elif item.type == "key_block" and not self.activate_key:
-                    self.activate_key = True
+                elif item.type == "key_block" and not item.activate:
                     key_object = [key for key in self.game_level.items if  key.type == "key" and key.y == item.y and key.x == item.x]
                     item.on_collide(self.player, item_key = key_object[0])
                 else:
@@ -127,7 +126,7 @@ class PlayState(BaseState):
             self.timer = time
             # Play sound
             settings.SOUNDS["timer"].play()
-            # Spawn key block and key
+            # Spawn key block
             keys_objects = [key for key in self.game_level.items if key.type == "key_block"]
             for key_object in keys_objects:
                 key_object.in_play = True
