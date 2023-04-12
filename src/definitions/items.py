@@ -16,7 +16,6 @@ This file contains the definition for items.
 from typing import Dict, Any
 
 import random
-import pudb 
 from gale.timer import Timer
 
 import settings
