@@ -47,6 +47,7 @@ class PlayState(BaseState):
         
         self.player.change_state("idle")
         self.player.score = enter_params.get("score", 0)
+        self.player.coins_counter = enter_params.get("coins_counter", {54: 0, 55: 0, 61: 0, 62: 0})
         
         self.timer = enter_params.get("timer", 30)
         self.key = False
