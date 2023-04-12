@@ -55,6 +55,7 @@ class PlayState(BaseState):
         self.timer = enter_params.get("timer", 30)
         self.key = False
         self.activate_key = False
+        self.circle = settings.WINDOW_WIDTH
 
         def countdown_timer():
             self.timer -= 1
@@ -64,6 +65,13 @@ class PlayState(BaseState):
 
             if self.timer == 0:
                 self.player.change_state("dead")
+        #Fade in
+        Timer.tween(
+            0.9,
+            [
+                (self, {"circle": settings.WINDOW_WIDTH*-1}),
+            ],
+        )
 
         Timer.every(1, countdown_timer)
         InputHandler.register_listener(self)
@@ -162,6 +170,7 @@ class PlayState(BaseState):
             (255, 255, 255),
             shadowed=True,
         )
+        pygame.draw.circle(surface,(0,0,0),(settings.VIRTUAL_WIDTH/2,settings.VIRTUAL_HEIGHT/2),self.circle)
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
