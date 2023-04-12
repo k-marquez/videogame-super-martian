@@ -30,6 +30,8 @@ class StartState(BaseState):
         self.martian_animation = Animation([settings.FRAMES["martian"][0]])
 
     def enter(self) -> None:
+        self.circle = 0
+        self.transition_alpha = 0
         self.title = Text(
             "Super Martian",
             settings.FONTS["medium"],
@@ -38,6 +40,12 @@ class StartState(BaseState):
             (197, 195, 198),
             shadowed=True,
         )
+
+        # A surface that supports alpha for the screen
+        self.screen_alpha_surface = pygame.Surface(
+            (settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT), pygame.SRCALPHA
+        )
+
         self.title_end_x = settings.VIRTUAL_WIDTH // 2 - self.title.rect.width // 2
         self.martian_x = -16
         self.martian_end_x = settings.VIRTUAL_WIDTH // 2 - 8
@@ -57,7 +65,6 @@ class StartState(BaseState):
             ],
             on_finish=self.arrive,
         )
-
 
     def exit(self) -> None:
         pygame.mixer.music.stop()
@@ -88,6 +95,14 @@ class StartState(BaseState):
                 shadowed=True,
             )
 
+        pygame.draw.circle(
+            self.screen_alpha_surface,
+            (0, 0, 0, self.transition_alpha),
+            (settings.WINDOW_WIDTH / 2, settings.WINDOW_HEIGHT / 2),
+            self.circle,
+        )
+        surface.blit(self.screen_alpha_surface, (0, 0))
+
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
             if self.tweening:
@@ -96,4 +111,15 @@ class StartState(BaseState):
                 self.martian_x = self.martian_end_x
                 self.arrive()
             else:
-                self.state_machine.change("begind")
+                Timer.tween(
+                    1,
+                    [
+                        (self, {"transition_alpha": 255}),
+                        (self, {"circle": max(settings.WINDOW_WIDTH, settings.WINDOW_HEIGHT)})
+                    ],
+                    on_finish=lambda: Timer.tween(
+                        0.5,
+                        [],
+                        lambda:self.state_machine.change("begind")
+                    )
+                )
