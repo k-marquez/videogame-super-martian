@@ -47,10 +47,10 @@ PLAYER_SPEED = 80
 
 GRAVITY = 600
 
-NUM_LEVELS = 1
+NUM_LEVELS = 3
 
 # Goal score
-GOAL_SCORE = 1
+GOAL_SCORE = 35
 
 BASE_DIR = pathlib.Path(__file__).parent
 

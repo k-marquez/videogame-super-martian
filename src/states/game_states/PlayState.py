@@ -5,8 +5,11 @@ Study Case: Super Martian (Platformer)
 Author: Alejandro Mujica
 alejandro.j.mujic4@gmail.com
 
-Edit by: Kevin Márquez
+Author: Kevin Márquez
 marquezberriosk@gmail.com
+
+Author: Lewis Ochoa
+lewis8a@gmail.com
 
 This file contains the class PlayState.
 """
@@ -116,8 +119,7 @@ class PlayState(BaseState):
                 else:
                     item.on_collide(self.player)
                     item.on_consume(self.player)
-        if self.player.score <= settings.GOAL_SCORE * self.level:
-            goal_score_by_level = settings.GOAL_SCORE * self.level
+        goal_score_by_level = settings.GOAL_SCORE * self.level
         if self.player.score >= goal_score_by_level and not self.key:
             self.key = True
             # Clean coins of world

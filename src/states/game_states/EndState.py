@@ -22,25 +22,31 @@ from gale.text import render_text
 import settings
 
 
-class GameOverState(BaseState):
+class EndState(BaseState):
     def enter(self, player, level) -> None:
         self.player = player
         self.level = level
         InputHandler.register_listener(self)
+        pygame.mixer.music.stop()
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load(settings.BASE_DIR / "sounds" / "music_end.mp3")
+        pygame.mixer.music.play(loops=-1)
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
-            self.state_machine.change("play", level = self.level)
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()
+            self.state_machine.change("play")
 
     def render(self, surface: pygame.Surface) -> None:
         surface.fill((25, 130, 196))
 
         render_text(
             surface,
-            "Game Over!",
+            "Thanks for playing!",
             settings.FONTS["medium"],
             settings.VIRTUAL_WIDTH // 2,
             20,
@@ -79,7 +85,7 @@ class GameOverState(BaseState):
 
         render_text(
             surface,
-            f"Score: {self.player.score}",
+            f"Final Score: {self.player.score}",
             settings.FONTS["small"],
             settings.VIRTUAL_WIDTH // 2,
             y + 10,
@@ -90,7 +96,7 @@ class GameOverState(BaseState):
 
         render_text(
             surface,
-            "Press Enter to play again",
+            "Press Enter to start the adventure again!",
             settings.FONTS["small"],
             settings.VIRTUAL_WIDTH // 2,
             settings.VIRTUAL_HEIGHT - 20,

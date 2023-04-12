@@ -30,6 +30,7 @@ class SuperMartian(Game, InputListener):
                 "play": game_states.PlayState,
                 "game_over": game_states.GameOverState,
                 "pause": game_states.PauseState,
+                "end": game_states.EndState,
             }
         )
         self.state_machine.change("start")
