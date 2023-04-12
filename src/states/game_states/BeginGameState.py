@@ -114,7 +114,7 @@ class BeginGameState(BaseState):
                 self.screen_alpha_surface,
                 f"Level {self.level}",
                 settings.FONTS["medium"],
-                settings.VIRTUAL_WIDTH / 2 - 30,
+                settings.VIRTUAL_WIDTH / 2 - 50,
                 settings.VIRTUAL_HEIGHT/ 2 - 10,
                 (255, 255, 255),
                 shadowed=True,
