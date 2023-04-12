@@ -53,9 +53,9 @@ def pickup_key(key: GameItem, player: Player, **kwargs: Dict[str,Any]):
     settings.SOUNDS["key"].stop()
     settings.SOUNDS["key"].play()
     if(kwargs.get("level") <= settings.NUM_LEVELS):
-        kwargs.get("state_machine").change("play", score = player.score, coins_counter = player.coins_counter,level = kwargs.get("level"))
+        kwargs.get("state_machine").change("begind", level=kwargs.get("level"))
     else:
-        kwargs.get("state_machine").change("end", player = player, level = kwargs.get("level"))
+        kwargs.get("state_machine").change("end", player=player, level=kwargs.get("level"))
 
 def hit_key_box_without_action(key_bloc: GameItem, player: Any):
     player.y = key_bloc.y - 18

@@ -39,7 +39,7 @@ class EndState(BaseState):
         if input_id == "enter" and input_data.pressed:
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
-            self.state_machine.change("play")
+            self.state_machine.change("begind", level=self.level)
 
     def render(self, surface: pygame.Surface) -> None:
         surface.fill((25, 130, 196))
@@ -55,12 +55,12 @@ class EndState(BaseState):
             shadowed=True,
         )
 
-        y = 50
+        self.y = 50
 
         for color, amount in self.player.coins_counter.items():
             surface.blit(
                 settings.TEXTURES["tiles"],
-                (settings.VIRTUAL_WIDTH // 2 - 32, y),
+                (settings.VIRTUAL_WIDTH // 2 - 32, self.y),
                 settings.FRAMES["tiles"][color],
             )
             render_text(
@@ -81,7 +81,7 @@ class EndState(BaseState):
                 (255, 255, 255),
                 shadowed=True,
             )
-            y += 20
+            self.y += 20
 
         render_text(
             surface,

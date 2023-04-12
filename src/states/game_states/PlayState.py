@@ -31,31 +31,21 @@ from src.Player import Player
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
         self.level = enter_params.get("level", 1)
-        self.camera = enter_params.get(
-            "camera", Camera(0, 0, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
-        )
         self.game_level = enter_params.get("game_level")
-        if self.game_level is None:
-            self.game_level = GameLevel(self.level, self.camera)
-            pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
-            pygame.mixer.music.play(loops=-1)
-
         self.tilemap = self.game_level.tilemap
-        if self.level == 1:
-            self.player = Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
-        elif self.level == 2:
-            self.player = Player(16 * 2, 16 * 5, self.game_level)
-        elif self.level == 3:
-            self.player = Player(16 * 2, 16 * 5, self.game_level)
-        
+        self.camera = enter_params.get("camera")
+        self.player = enter_params.get("player")
         self.player.change_state("idle")
-        self.player.score = enter_params.get("score", 0)
-        self.player.coins_counter = enter_params.get("coins_counter", {54: 0, 55: 0, 61: 0, 62: 0})
-        
         self.timer = enter_params.get("timer", 30)
+        
+        #self.player.coins_counter = enter_params.get("coins_counter", {54: 0, 55: 0, 61: 0, 62: 0})
+        
+        pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
+        pygame.mixer.music.play(loops=-1)
+
         self.key = False
         self.activate_key = False
-        self.circle = settings.WINDOW_WIDTH
+        #self.circle = max(settings.WINDOW_WIDTH, settings.WINDOW_HEIGHT) * 1.25
 
         def countdown_timer():
             self.timer -= 1
@@ -65,13 +55,6 @@ class PlayState(BaseState):
 
             if self.timer == 0:
                 self.player.change_state("dead")
-        #Fade in
-        Timer.tween(
-            0.9,
-            [
-                (self, {"circle": settings.WINDOW_WIDTH*-1}),
-            ],
-        )
 
         Timer.every(1, countdown_timer)
         InputHandler.register_listener(self)
@@ -170,7 +153,6 @@ class PlayState(BaseState):
             (255, 255, 255),
             shadowed=True,
         )
-        pygame.draw.circle(surface,(0,0,0),(settings.VIRTUAL_WIDTH/2,settings.VIRTUAL_HEIGHT/2),self.circle)
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:

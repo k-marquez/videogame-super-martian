@@ -12,5 +12,6 @@ from src.states.game_states.PauseState import PauseState
 from src.states.game_states.PlayState import PlayState
 from src.states.game_states.StartState import StartState
 from src.states.game_states.EndState import EndState
+from src.states.game_states.BeginGameState import BeginGameState
 
-(GameOverState, PauseState, PlayState, StartState, EndState)
+(GameOverState, PauseState, PlayState, StartState, EndState, BeginGameState)

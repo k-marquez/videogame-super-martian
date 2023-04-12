@@ -96,4 +96,4 @@ class StartState(BaseState):
                 self.martian_x = self.martian_end_x
                 self.arrive()
             else:
-                self.state_machine.change("play")
+                self.state_machine.change("begind")
