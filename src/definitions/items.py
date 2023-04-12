@@ -64,7 +64,6 @@ def hit_key_box_without_action(key_bloc: GameItem, player: Any):
 
 def hit_key_box_falling(key_bloc: GameItem, player: Any):
     player.vy = 0
-
     if player.x < key_bloc.x + 16 and key_bloc.x < player.x + player.width:
         player.y = key_bloc.y - 18
         if player.vx == 0:
@@ -76,7 +75,8 @@ def hit_key_box_falling(key_bloc: GameItem, player: Any):
 
 def hit_key_box_jumping(key_bloc: GameItem, player: Any, **enter_params: Dict[str,Any]):
     player.vy = 0
-
+    player.y = key_bloc.y + player.height
+    
     if not key_bloc.activate:
         key_bloc.activate = True
         settings.SOUNDS["box"].stop()
