@@ -54,6 +54,9 @@ class BeginGameState(BaseState):
         elif self.level == 3:
             self.player = Player(16 * 2, 16 * 5, self.game_level)
 
+        self.player.score = enter_params.get("score", 0)
+        self.player.coins_counter = enter_params.get("gems", self.player.coins_counter)
+
         def arrive_after():
             # Then, animate the text going disapear
             self.display_text = False

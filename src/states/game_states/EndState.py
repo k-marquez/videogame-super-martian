@@ -39,7 +39,7 @@ class EndState(BaseState):
         if input_id == "enter" and input_data.pressed:
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
-            self.state_machine.change("begind", level=self.level)
+            self.state_machine.change("start")
 
     def render(self, surface: pygame.Surface) -> None:
         surface.fill((25, 130, 196))
@@ -68,7 +68,7 @@ class EndState(BaseState):
                 "x",
                 settings.FONTS["small"],
                 settings.VIRTUAL_WIDTH // 2,
-                y + 3,
+                self.y + 3,
                 (255, 255, 255),
                 shadowed=True,
             )
@@ -77,7 +77,7 @@ class EndState(BaseState):
                 f"{amount}",
                 settings.FONTS["small"],
                 settings.VIRTUAL_WIDTH // 2 + 16,
-                y + 3,
+                self.y + 3,
                 (255, 255, 255),
                 shadowed=True,
             )
@@ -88,7 +88,7 @@ class EndState(BaseState):
             f"Final Score: {self.player.score}",
             settings.FONTS["small"],
             settings.VIRTUAL_WIDTH // 2,
-            y + 10,
+            self.y + 10,
             (255, 255, 255),
             shadowed=True,
             center=True,
