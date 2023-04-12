@@ -29,6 +29,8 @@ class PauseState(BaseState):
         InputHandler.unregister_listener(self.player.state_machine.current)
         InputHandler.register_listener(self)
         pygame.mixer.music.pause()
+        settings.SOUNDS["pause"].stop()
+        settings.SOUNDS["pause"].play()
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)

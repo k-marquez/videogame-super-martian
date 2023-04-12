@@ -50,7 +50,12 @@ def pickup_yellow_coin(coin: GameItem, player: Player, **kwargs: Dict[str,Any]):
     pickup_coin(coin, player, 50, 54, random.uniform(20, 25))
     
 def pickup_key(key: GameItem, player: Player, **kwargs: Dict[str,Any]):
-    kwargs.get("state_machine").change("play", score = player.score, coins_counter = player.coins_counter,level = kwargs.get("level"))
+    settings.SOUNDS["key"].stop()
+    settings.SOUNDS["key"].play()
+    if(kwargs.get("level") <= settings.NUM_LEVELS):
+        kwargs.get("state_machine").change("play", score = player.score, coins_counter = player.coins_counter,level = kwargs.get("level"))
+    else:
+        kwargs.get("state_machine").change("game_over", player = player, level = kwargs.get("level"))
 
 def hit_key_box_without_action(key_bloc: GameItem, player: Any):
     player.y = key_bloc.y - 18
@@ -74,6 +79,8 @@ def hit_key_box_jumping(key_bloc: GameItem, player: Any, **enter_params: Dict[st
 
     if not key_bloc.activate:
         key_bloc.activate = True
+        settings.SOUNDS["box"].stop()
+        settings.SOUNDS["box"].play()
 
         def arrive():
             key.collidable = True

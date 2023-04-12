@@ -45,12 +45,12 @@ WINDOW_HEIGHT = VIRTUAL_HEIGHT * 2.4
 
 PLAYER_SPEED = 80
 
-GRAVITY = 550
+GRAVITY = 600
 
-NUM_LEVELS = 3
+NUM_LEVELS = 1
 
 # Goal score
-GOAL_SCORE = 50
+GOAL_SCORE = 1
 
 BASE_DIR = pathlib.Path(__file__).parent
 
@@ -77,6 +77,11 @@ SOUNDS = {
     "jump": pygame.mixer.Sound(BASE_DIR / "sounds" / "jump.wav"),
     "timer": pygame.mixer.Sound(BASE_DIR / "sounds" / "timer.wav"),
     "count": pygame.mixer.Sound(BASE_DIR / "sounds" / "count.wav"),
+    "game_over": pygame.mixer.Sound(BASE_DIR / "sounds" / "game_over.mp3"),
+    "pause": pygame.mixer.Sound(BASE_DIR / "sounds" / "pause.mp3"),
+    "goal_score": pygame.mixer.Sound(BASE_DIR / "sounds" / "goal_score.mp3"),
+    "box": pygame.mixer.Sound(BASE_DIR / "sounds" / "box.mp3"),
+    "key": pygame.mixer.Sound(BASE_DIR / "sounds" / "key.mp3"),
 }
 
 SOUNDS["pickup_coin"].set_volume(0.5)

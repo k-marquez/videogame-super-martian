@@ -73,6 +73,8 @@ class PlayState(BaseState):
         if self.player.is_dead:
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
+            settings.SOUNDS["game_over"].stop()
+            settings.SOUNDS["game_over"].play()
             self.state_machine.change("game_over", self.player, self.level)
 
         self.player.update(dt)
@@ -114,9 +116,8 @@ class PlayState(BaseState):
                 else:
                     item.on_collide(self.player)
                     item.on_consume(self.player)
-
-        goal_score_by_level = settings.GOAL_SCORE + settings.GOAL_SCORE * 0.5 * self.level
-        
+        if self.player.score <= settings.GOAL_SCORE * self.level:
+            goal_score_by_level = settings.GOAL_SCORE * self.level
         if self.player.score >= goal_score_by_level and not self.key:
             self.key = True
             # Clean coins of world
@@ -126,6 +127,8 @@ class PlayState(BaseState):
             Timer.clear()
             self.timer = time
             # Play sound
+            settings.SOUNDS["goal_score"].stop()
+            settings.SOUNDS["goal_score"].play()
             settings.SOUNDS["timer"].play()
             # Spawn key block
             keys_objects = [key for key in self.game_level.items if key.type == "key_block"]
